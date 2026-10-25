@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VYBE Studio</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #080808;
+  color: white;
+  min-height: 100vh;
+}
+
+/* LOGIN */
+.auth {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at top right, #25102b, transparent 40%),
+    #080808;
+}
+
+.card {
+  width: 390px;
+  background: #111;
+  border: 1px solid #292929;
+  border-radius: 22px;
+  padding: 32px;
+  box-shadow: 0 20px 70px #000;
+}
+
+.logo {
+  font-size: 32px;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.logo span {
+  color: #ff2d55;
+}
+
+.subtitle {
+  text-align: center;
+  color: #999;
+  margin-bottom: 28px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid #333;
+  border-radius: 12px;
+  background: #1b1b1b;
+  color: white;
+  outline: none;
+}
+
+input:focus {
+  border-color: #ff2d55;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 13px 18px;
+  font-weight: bold;
+}
+
+.primary {
+  width: 100%;
+  background: #ff2d55;
+  color: white;
+  margin-top: 8px;
+}
+
+.switch {
+  margin-top: 20px;
+  text-align: center;
+  color: #999;
+  cursor: pointer;
+}
+
+.switch b {
+  color: white;
+}
+
+/* APP */
+.app {
+  display: none;
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 230px;
+  height: 100vh;
+  background: #101010;
+  border-right: 1px solid #242424;
+  padding: 25px 16px;
+}
+
+.sidebar .logo {
+  text-align: left;
+  padding-left: 12px;
+  margin-bottom: 35px;
+}
+
+.nav {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: #aaa;
+  margin-bottom: 7px;
+}
+
+.nav:hover,
+.nav.active {
+  background: #242424;
+  color: white;
+}
+
+.logout {
+  position: absolute;
+  bottom: 25px;
+  left: 16px;
+  width: calc(100% - 32px);
+  background: #191919;
+  color: #aaa;
+}
+
+/* CONTENT */
+.content {
+  margin-left: 230px;
+  padding: 35px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.top h1 {
+  font-size: 28px;
+}
+
+.profile {
+  background: #171717;
+  padding: 10px 15px;
+  border-radius: 20px;
+  color: #ddd;
+}
+
+.connect {
+  background: linear-gradient(90deg, #ff2d55, #fe2c55);
+  color: white;
+  padding: 13px 20px;
+}
+
+/* STATS */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.stat {
+  background: #111;
+  border: 1px solid #252525;
+  border-radius: 18px;
+  padding: 22px;
+}
+
+.stat small {
+  color: #888;
+}
+
+.stat h2 {
+  margin-top: 12px;
+  font-size: 28px;
+}
+
+.points {
+  color: #ffd43b;
+}
+
+/* SECTIONS */
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.panel {
+  background: #111;
+  border: 1px solid #252525;
+  border-radius: 18px;
+  padding: 22px;
+}
+
+.panel h2 {
+  margin-bottom: 18px;
+}
+
+.chart {
+  height: 230px;
+  display: flex;
+  align-items: end;
+  gap: 10px;
+  padding-top: 20px;
+}
+
+.bar {
+  flex: 1;
+  background: linear-gradient(#ff2d55, #6d1830);
+  border-radius: 8px 8px 2px 2px;
+  min-height: 25px;
+}
+
+.activity {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #242424;
+}
+
+.activity:last-child {
+  border-bottom: 0;
+}
+
+.activity span:last-child {
+  color: #ffd43b;
+  font-weight: bold;
+}
+
+/* CONNECT MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000b;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-box {
+  width: 420px;
+  background: #151515;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 30px;
+}
+
+.modal-box h2 {
+  margin-bottom: 12px;
+}
+
+.modal-box p {
+  color: #999;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.close {
+  background: #292929;
+  color: white;
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* MOBILE */
+@media(max-width: 800px) {
+  .sidebar {
+    width: 70px;
+  }
+
+  .sidebar .logo {
+    font-size: 0;
+  }
+
+  .sidebar .logo span {
+    font-size: 22px;
+  }
+
+  .nav {
+    font-size: 0;
+    text-align: center;
+  }
+
+  .nav::first-letter {
+    font-size: 20px;
+  }
+
+  .content {
+    margin-left: 70px;
+    padding: 20px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN / SIGN UP -->
+<div class="auth" id="auth">
+  <div class="card">
+
+    <div class="logo">VYBE<span>.</span></div>
+
+    <div class="subtitle" id="authSubtitle">
+      Sign in to your Creator Studio
+    </div>
+
+    <input id="name" placeholder="Username" style="display:none;">
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button class="primary" onclick="submitAuth()" id="authButton">
+      Login
+    </button>
+
+    <div class="switch" onclick="toggleAuth()" id="switchText">
+      Don't have an account? <b>Sign Up</b>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- APP -->
+<div class="app" id="app">
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      VYBE<span>.</span>
+    </div>
+
+    <button class="nav active">📊 Overview</button>
+    <button class="nav">🎬 Content</button>
+    <button class="nav">💬 Comments</button>
+    <button class="nav">📈 Analytics</button>
+    <button class="nav">⭐ Points</button>
+
+    <button class="logout" onclick="logout()">
+      Log out
+    </button>
+
+  </aside>
+
+
+  <main class="content">
+
+    <div class="top">
+
+      <div>
+        <h1>Creator Studio</h1>
+        <p style="color:#888;margin-top:6px;">
+          Your personal creator dashboard
+        </p>
+      </div>
+
+      <div>
+        <span class="profile" id="userDisplay">
+          User
+        </span>
+
+        <button class="connect" onclick="openModal()">
+          Connect TikTok
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- STATS -->
+    <section class="stats">
+
+      <div class="stat">
+        <small>Followers</small>
+        <h2 id="followers">0</h2>
+      </div>
+
+      <div class="stat">
+        <small>Likes</small>
+        <h2 id="likes">0</h2>
+      </div>
+
+      <div class="stat">
+        <small>Comments</small>
+        <h2 id="comments">0</h2>
+      </div>
+
+      <div class="stat">
+        <small>Your Points</small>
+        <h2 class="points" id="points">0</h2>
+      </div>
+
+    </section>
+
+
+    <div class="grid">
+
+      <!-- ANALYTICS -->
+      <section class="panel">
+
+        <h2>Analytics</h2>
+
+        <p style="color:#888;">
+          Your recent creator activity
+        </p>
+
+        <div class="chart">
+
+          <div class="bar" style="height:35%"></div>
+          <div class="bar" style="height:48%"></div>
+          <div class="bar" style="height:42%"></div>
+          <div class="bar" style="height:65%"></div>
+          <div class="bar" style="height:54%"></div>
+          <div class="bar" style="height:78%"></div>
+          <div class="bar" style="height:90%"></div>
+
+        </div>
+
+      </section>
+
+
+      <!-- POINTS -->
+      <section class="panel">
+
+        <h2>Points History</h2>
+
+        <div class="activity">
+          <span>Daily activity</span>
+          <span>+10</span>
+        </div>
+
+        <div class="activity">
+          <span>Creator activity</span>
+          <span>+25</span>
+        </div>
+
+        <div class="activity">
+          <span>Profile setup</span>
+          <span>+5</span>
+        </div>
+
+        <div class="activity">
+          <span>Total</span>
+          <span id="historyPoints">40</span>
+        </div>
+
+      </section>
+
+    </div>
+
+
+    <section class="panel" style="margin-top:20px;">
+
+      <h2>Account privacy</h2>
+
+      <p style="color:#999;line-height:1.6;">
+        This dashboard is personal to your account.
+        Your creator statistics and points are not shown
+        to other users.
+      </p>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- CONNECT MODAL -->
+<div class="modal" id="modal">
+
+  <div class="modal-box">
+
+    <h2>Connect TikTok</h2>
+
+    <p>
+      Connect your TikTok account using official
+      authorization. Your TikTok password should
+      never be entered into this website.
+    </p>
+
+    <button class="primary" onclick="connectTikTok()">
+      Continue with TikTok
+    </button>
+
+    <button class="close" onclick="closeModal()">
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let signupMode = false;
+
+
+/* AUTH */
+
+function toggleAuth() {
+
+  signupMode = !signupMode;
+
+  document.getElementById("name").style.display =
+    signupMode ? "block" : "none";
+
+  document.getElementById("authButton").innerText =
+    signupMode ? "Create Account" : "Login";
+
+  document.getElementById("authSubtitle").innerText =
+    signupMode
+      ? "Create your Creator Studio account"
+      : "Sign in to your Creator Studio";
+
+  document.getElementById("switchText").innerHTML =
+    signupMode
+      ? "Already have an account? <b>Login</b>"
+      : "Don't have an account? <b>Sign Up</b>";
+}
+
+
+function submitAuth() {
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  if (!email || !password) {
+    alert("Please enter your email and password.");
+    return;
+  }
+
+  if (signupMode && !name) {
+    alert("Please enter a username.");
+    return;
+  }
+
+  const username =
+    signupMode
+      ? name
+      : (localStorage.getItem("vybe_username") || email.split("@")[0]);
+
+  localStorage.setItem("vybe_username", username);
+  localStorage.setItem("vybe_logged", "true");
+
+  showDashboard();
+}
+
+
+function showDashboard() {
+
+  document.getElementById("auth").style.display = "none";
+  document.getElementById("app").style.display = "block";
+
+  const username =
+    localStorage.getItem("vybe_username") || "Creator";
+
+  document.getElementById("userDisplay").innerText =
+    "@" + username;
+
+  /*
+   * Demo values only.
+   * Real TikTok values must come from the
+   * official TikTok API after OAuth authorization.
+   */
+
+  document.getElementById("followers").innerText = "0";
+  document.getElementById("likes").innerText = "0";
+  document.getElementById("comments").innerText = "0";
+
+  let points =
+    Number(localStorage.getItem("vybe_points") || 40);
+
+  document.getElementById("points").innerText = points;
+  document.getElementById("historyPoints").innerText = points;
+}
+
+
+function logout() {
+
+  localStorage.removeItem("vybe_logged");
+
+  document.getElementById("app").style.display = "none";
+  document.getElementById("auth").style.display = "flex";
+}
+
+
+/* TIKTOK */
+
+function openModal() {
+  document.getElementById("modal").style.display = "flex";
+}
+
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
+
+
+function connectTikTok() {
+
+  /*
+   * PLACEHOLDER ONLY.
+   *
+   * This is where the official TikTok OAuth
+   * authorization URL will be opened.
+   *
+   * Do NOT put a TikTok password here.
+   */
+
+  alert(
+    "TikTok OAuth needs to be connected here using your official TikTok Developer application."
+  );
+
+  closeModal();
+}
+
+
+/* AUTO LOGIN */
+
+if (localStorage.getItem("vybe_logged") === "true") {
+  showDashboard();
+}
+
+</script>
+
+</body>
+</html>
